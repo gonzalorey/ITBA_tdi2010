@@ -1,7 +1,7 @@
-function ret = sobel(img)
+function ret = medianFilter(img)
 
-	mask1 = [-1, -2, -1; 0, 0, 0; 1, 2, 1];
-	mask2 = [-1, 0, 1; -2, 0, 1; -1, 0, 2];
+	mask1 = [-1, -1, -1; 0, 0, 0; 1, 1, 1];
+	mask2 = [-1, 0, 1; -1, 0, 1; -1, 0, 1];
 
 	% process for RGB or RAW image
 	if(length(size(img.full)) == 3)

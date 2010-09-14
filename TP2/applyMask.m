@@ -4,7 +4,7 @@ function ret = applyMask(A, mask)
     ret(size(A,1),size(A,2)) = 0;
 
 	% initialize the auxA matrix with the correction of the borders
-	auxA = ones(size(A,1) + ceil(size(mask,1) / 2), size(A,2) + ceil(size(mask,2) / 2)) * 128;
+	auxA = ones(size(A,1) + size(mask,1) - 1, size(A,2) + size(mask,2) - 1) * 128;
 	auxA(1:size(A,1), 1:size(A,2)) = A;
 
 	for i = 1 : size(A,1)

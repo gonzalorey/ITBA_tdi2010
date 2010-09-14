@@ -1,4 +1,4 @@
-function ret = prewitt(img)
+function ret = prewittOperator(img)
 
 	mask1 = [-1, -1, -1; 0, 0, 0; 1, 1, 1];
 	mask2 = [-1, 0, 1; -1, 0, 1; -1, 0, 1];
