@@ -1,7 +1,7 @@
 function ret = imageSum( A , B )
 
 	% sum the matrixes
-	ret = double(A) + B;
+	ret = double(A) + double(B);
 	
 	% cast to double so that it can be multiplied
 	ret = cast(ret, 'double');
