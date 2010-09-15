@@ -1,5 +1,5 @@
-function ret = getRAW(filename, hight, width)
-	ret.full = fread(fopen(filename, 'r'), [hight, width], 'uint8=>uint8')';
-	ret.hight = hight;
+function ret = getRAW(filename, height, width)
+	ret.full = fread(fopen(filename, 'r'), [height, width], 'uint8=>uint8')';
+	ret.height = height;
 	ret.width = width;
 end
