@@ -8,5 +8,8 @@ function ret = saltAndPepperGenerator(p0, p1, height, length)
 	
 	% add the pepper
 	ret = ret + (x >= p1) * 254;
+	
+	% cast
+	ret = uint8(ret);
 end
 

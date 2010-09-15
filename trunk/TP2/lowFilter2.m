@@ -1,5 +1,8 @@
 function ret = lowFilter2(img, num)
 	
+	% the return value type is the same as the entry image type
+	ret = img;
+	
 	% create the mask
 	mask = ones(num, num) / (num * num);
 

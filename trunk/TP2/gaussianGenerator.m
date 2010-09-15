@@ -1,12 +1,12 @@
-function ret = gaussianNoise(mu, sigma2, height, length)
+function ret = gaussianNoise(mu, sigma2, height, width)
 	
 	% N(mean, sigma^2) = N(0,1)*sigma2 + mu
 	
 	% get x1~U(0,1)
-	x1 = uniformGenerator(height, length);
+	x1 = uniformGenerator(height, width);
 	
 	% get x2~U(0,1)
-	x2 = uniformGenerator(height, length);
+	x2 = uniformGenerator(height, width);
 	
 	% get y1~N(0,1)
 	y1 = sqrt(-2 * log(x1)) .* cos(2 * pi * x2);

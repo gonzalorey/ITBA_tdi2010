@@ -3,7 +3,7 @@ function ret = noise(A)
 	ret.orig = A;
 	
 	% gaussian additive white noise
-	ret.gau = gaussianNoise(ret.orig, 1, 15);
+	ret.gau = gaussianNoise(ret.orig, 0, 15);
 	saveImage(ret.gau, 'gaussian.jpg');
 	
 	% rayleigh multiplicative noise
