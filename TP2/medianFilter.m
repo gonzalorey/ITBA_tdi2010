@@ -1,22 +1,32 @@
-function ret = medianFilter(img)
+function ret = medianFilter2( img )
+%MEDIANFILTER2 median 3x3 filter to img
+%   Detailed explanation goes here
 
-	mask1 = [-1, -1, -1; 0, 0, 0; 1, 1, 1];
-	mask2 = [-1, 0, 1; -1, 0, 1; -1, 0, 1];
+	% the return value type is the same as the entry image type
+	ret = img;
 
 	% process for RGB or RAW image
 	if(length(size(img.full)) == 3)
-		ret.R = applyMask(img.R, mask1);
-		ret.R = imageSum(ret.R, applyMask(img.R, mask2));
-		ret.G = applyMask(img.G, mask1);
-		ret.G = imageSum(ret.G, applyMask(img.G, mask2));
-		ret.B = applyMask(img.B, mask1);
-		ret.B = imageSum(ret.B, applyMask(img.B, mask2));
+		ret.R = uint8(nlfilter(double(ret.R), [3, 3], @medianFunc));
+		ret.G = uint8(nlfilter(double(ret.G), [3, 3], @medianFunc));
+		ret.B = uint8(nlfilter(double(ret.B), [3, 3], @medianFunc));
+
 		ret.full = ret.R;
 		ret.full(:,:,2) = ret.G;
 		ret.full(:,:,3) = ret.B;
 	else
-		ret = img;
-		ret.full = applyMask(ret.full, mask1);
-		ret.full = imageSum(ret.full, applyMask(ret.full, mask2));
+		ret.full = uint8(nlfilter(double(ret.full), [3, 3], @medianFunc));
 	end
+end
+
+function result = medianFunc(x)
+
+for i = 1 : 3
+    for j = 1 : 3
+            medianVector(i * j) = x(i,j);
+    end
+end
+
+result = median(medianVector);
+
 end
