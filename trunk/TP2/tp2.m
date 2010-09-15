@@ -1,4 +1,4 @@
-function ret = noise(A)
+function ret = tp2(A)
 	% save the original
 	ret.orig = A;
 	
