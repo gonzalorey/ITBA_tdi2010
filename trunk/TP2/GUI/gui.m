@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 16-Sep-2010 03:28:32
+% Last Modified by GUIDE v2.5 16-Sep-2010 09:20:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -100,23 +100,31 @@ function loadImage_Callback(hObject, eventdata, handles)
 % hObject    handle to loadImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global img;
+global srcImg;
 
 name = get(handles.sourceImageName, 'string');
-img = getRGB(name);
+srcImg = getRGB(name);
 axes(handles.sourceImageAxes);
-imshow(img.full);
+imshow(srcImg.full);
+
 
 % --- Executes on button press in medianFilter.
 function medianFilter_Callback(hObject, eventdata, handles)
 % hObject    handle to medianFilter (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global img;
+global srcImg;
+global prcImg;
 
-b = medianFilter(img);
-axes(handles.filteredImageAxes);
-imshow(b.full);
+set(handles.statusLabel, 'String', 'Processing...');
+
+%prcImg = medianFilter(srcImg);
+prcImg = medianFilter2(srcImg,4);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'median_filter.jpg');
 
 
 % --- Executes on button press in lowpassfilter.
@@ -124,67 +132,248 @@ function lowpassfilter_Callback(hObject, eventdata, handles)
 % hObject    handle to lowpassfilter (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global img;
+global srcImg;
+global prcImg;
 
-b = lowFilter(img, 3);
-axes(handles.filteredImageAxes);
-imshow(b.full);
+%prcImg = lowFilter(srcImg, 3);
+prcImg = lowFilter2(srcImg, 3);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.processedImageName, 'String', 'lowpass_filter.jpg');
+
 
 % --- Executes on button press in highpassfilter.
 function highpassfilter_Callback(hObject, eventdata, handles)
 % hObject    handle to highpassfilter (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global img;
+global srcImg;
+global prcImg;
 
-b = highFilter(img, 3);
-axes(handles.filteredImageAxes);
-imshow(b.full);
+%prcImg = highFilter(srcImg, 3);
+prcImg = highFilter2(srcImg, 3);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+set(handles.processedImageName, 'String', 'highpass_filter.jpg');
+
+
+% --- Executes on button press in gaussianNoise.
+function gaussianNoise_Callback(hObject, eventdata, handles)
+% hObject    handle to gaussianNoise (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+mu = 0;
+sigma = 15;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = gaussianNoise(srcImg, 0, 15);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'gaussian_noise.jpg');
+
+
+% --- Executes on button press in rayleighNoise.
+function rayleighNoise_Callback(hObject, eventdata, handles)
+% hObject    handle to rayleighNoise (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+psi = 1;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = rayleighNoise(srcImg, psi);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'rayleigh_noise.jpg');
+
+
+% --- Executes on button press in exponentialNoise.
+function exponentialNoise_Callback(hObject, eventdata, handles)
+% hObject    handle to exponentialNoise (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+lambda = 10;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = exponentialNoise(srcImg, lambda);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'exponential_noise.jpg');
+
+
+% --- Executes on button press in saltAndPepperNoise.
+function saltAndPepperNoise_Callback(hObject, eventdata, handles)
+% hObject    handle to saltAndPepperNoise (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+p1 = 0.015;
+p2 = 0.985;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = saltAndPepperNoise(srcImg, p1, p2);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'saltandpepper_noise.jpg');
+
+% --- Executes on button press in robertsOperator.
+function robertsOperator_Callback(hObject, eventdata, handles)
+% hObject    handle to robertsOperator (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = robertsOperator(srcImg);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'roberts_operator.jpg');
+
+
+% --- Executes on button press in prewittOperator.
+function prewittOperator_Callback(hObject, eventdata, handles)
+% hObject    handle to prewittOperator (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = prewittOperator(srcImg);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'prewitt_operator.jpg');
+
+
+% --- Executes on button press in sobelOperator.
+function sobelOperator_Callback(hObject, eventdata, handles)
+% hObject    handle to sobelOperator (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = sobelOperator(srcImg);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'sobel_operator.jpg');
+
+
+% --- Executes on button press in isotropicDiffusion.
+function isotropicDiffusion_Callback(hObject, eventdata, handles)
+% hObject    handle to isotropicDiffusion (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+sigma = 10;
+dim = 10;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = isotropicDiffusion(srcImg, sigma, dim);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'isotropic_diffusion.jpg');
+
+
+% --- Executes on button press in anisotropicDiffusion.
+function anisotropicDiffusion_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusion (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+set(handles.statusLabel, 'String', 'Processing...');
+
+prcImg = sobelOperator(srcImg);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'anisotropic_diffusion.jpg');
+
+
+% --- Executes on button press in loadAsSourceImage.
+function loadAsSourceImage_Callback(hObject, eventdata, handles)
+% hObject    handle to loadAsSourceImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+
+srcImg = prcImg;
+axes(handles.sourceImageAxes);
+imshow(prcImg.full);
+
+
+function processedImageName_Callback(hObject, eventdata, handles)
+% hObject    handle to processedImageName (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+% Hints: get(hObject,'String') returns contents of processedImageName as text
+%        str2double(get(hObject,'String')) returns contents of processedImageName as a double
 
-% --- Executes on button press in pushbutton6.
-function pushbutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton6 (see GCBO)
+
+% --- Executes during object creation, after setting all properties.
+function processedImageName_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to processedImageName (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in saveImage.
+function saveImage_Callback(hObject, eventdata, handles)
+% hObject    handle to saveImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+global prcImg;
 
-
-% --- Executes on button press in pushbutton7.
-function pushbutton7_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton7 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton8.
-function pushbutton8_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton9.
-function pushbutton9_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton10.
-function pushbutton10_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton10 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton11.
-function pushbutton11_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton11 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+name = get(handles.processedImageName, 'string');
+saveImage(prcImg.full, name);
