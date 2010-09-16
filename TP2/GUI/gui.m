@@ -103,7 +103,13 @@ function loadImage_Callback(hObject, eventdata, handles)
 global srcImg;
 
 name = get(handles.sourceImageName, 'string');
-srcImg = getRGB(name);
+
+if (length(regexp(name, '([A-Za-z0-9]+)(.raw)', 'ignorecase')) == 1)
+   srcImg = getRAW(name, 256, 256);
+else
+   srcImg = getRGB(name); 
+end
+
 axes(handles.sourceImageAxes);
 imshow(srcImg.full);
 
