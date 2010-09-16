@@ -6,6 +6,6 @@ function ret = newRAW(filename, A)
 	fwrite(fid, A);
 	
 	ret.full = A;
-	ret.hight = length(A(:,1));
+	ret.height = length(A(:,1));
 	ret.width = length(A(1,:));
 end
