@@ -354,7 +354,7 @@ cs = str2double(get(handles.anisotropicDiffusionCS, 'string'));
 ce = str2double(get(handles.anisotropicDiffusionCE, 'string'));
 cw = str2double(get(handles.anisotropicDiffusionCW, 'string'));
 
-prcImg = sobelOperator(srcImg);
+prcImg = anisotropicDiffusion(srcImg, sigma, dim, cn, cs, ce, cw);
 axes(handles.processedImageAxes);
 imshow(prcImg.full);
 
