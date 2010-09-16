@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 16-Sep-2010 09:20:10
+% Last Modified by GUIDE v2.5 16-Sep-2010 16:11:15
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -105,7 +105,9 @@ global srcImg;
 name = get(handles.sourceImageName, 'string');
 
 if (length(regexp(name, '([A-Za-z0-9]+)(.raw)', 'ignorecase')) == 1)
-   srcImg = getRAW(name, 256, 256);
+   heigth = get(handles.heightBox, 'string');
+   width = get(handles.widthBox, 'string');
+   srcImg = getRAW(name, str2num(heigth), str2num(width));
 else
    srcImg = getRGB(name); 
 end
@@ -124,8 +126,10 @@ global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
 
+dim = str2double(get(handles.medianFilterDim, 'string'));
+
 %prcImg = medianFilter(srcImg);
-prcImg = medianFilter2(srcImg,4);
+prcImg = medianFilter2(srcImg,dim);
 axes(handles.processedImageAxes);
 imshow(prcImg.full);
 
@@ -141,11 +145,16 @@ function lowpassfilter_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
+set(handles.statusLabel, 'String', 'Processing...');
+
+dim = str2double(get(handles.lowPassFilterDim, 'string'));
+
 %prcImg = lowFilter(srcImg, 3);
-prcImg = lowFilter2(srcImg, 3);
+prcImg = lowFilter2(srcImg, dim);
 axes(handles.processedImageAxes);
 imshow(prcImg.full);
 
+set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'lowpass_filter.jpg');
 
 
@@ -157,11 +166,16 @@ function highpassfilter_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
+set(handles.statusLabel, 'String', 'Processing...');
+
+dim = str2double(get(handles.highPassFilterDim, 'string'));
+
 %prcImg = highFilter(srcImg, 3);
-prcImg = highFilter2(srcImg, 3);
+prcImg = highFilter2(srcImg, dim);
 axes(handles.processedImageAxes);
 imshow(prcImg.full);
 
+set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'highpass_filter.jpg');
 
 
@@ -173,12 +187,12 @@ function gaussianNoise_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
-mu = 0;
-sigma = 15;
-
 set(handles.statusLabel, 'String', 'Processing...');
 
-prcImg = gaussianNoise(srcImg, 0, 15);
+mu = str2double(get(handles.gaussianNoiseMu, 'string'));
+sigma = str2double(get(handles.gaussianNoiseSigma, 'string'));
+
+prcImg = gaussianNoise(srcImg, mu, sigma);
 axes(handles.processedImageAxes);
 imshow(prcImg.full);
 
@@ -194,7 +208,9 @@ function rayleighNoise_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
-psi = 1;
+set(handles.statusLabel, 'String', 'Processing...');
+
+psi = str2double(get(handles.rayleighNoisePsi, 'string'));
 
 set(handles.statusLabel, 'String', 'Processing...');
 
@@ -214,9 +230,9 @@ function exponentialNoise_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
-lambda = 10;
-
 set(handles.statusLabel, 'String', 'Processing...');
+
+lambda = str2double(get(handles.exponentialNoiseLambda, 'string'));
 
 prcImg = exponentialNoise(srcImg, lambda);
 axes(handles.processedImageAxes);
@@ -234,10 +250,10 @@ function saltAndPepperNoise_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
-p1 = 0.015;
-p2 = 0.985;
-
 set(handles.statusLabel, 'String', 'Processing...');
+
+p1 = str2double(get(handles.saltAndPepperNoiseP1, 'string'));
+p2 = str2double(get(handles.saltAndPepperNoiseP2, 'string'));
 
 prcImg = saltAndPepperNoise(srcImg, p1, p2);
 axes(handles.processedImageAxes);
@@ -308,10 +324,10 @@ function isotropicDiffusion_Callback(hObject, eventdata, handles)
 global srcImg;
 global prcImg;
 
-sigma = 10;
-dim = 10;
-
 set(handles.statusLabel, 'String', 'Processing...');
+
+dim = str2double(get(handles.isotropicDiffusionDim, 'string'));
+sigma = str2double(get(handles.isotropicDiffusionSigma, 'string'));
 
 prcImg = isotropicDiffusion(srcImg, sigma, dim);
 axes(handles.processedImageAxes);
@@ -330,6 +346,13 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+
+dim = str2double(get(handles.isotropicDiffusionDim, 'string'));
+sigma = str2double(get(handles.anisotropicDiffusionSigma, 'string'));
+cn = str2double(get(handles.anisotropicDiffusionCN, 'string'));
+cs = str2double(get(handles.anisotropicDiffusionCS, 'string'));
+ce = str2double(get(handles.anisotropicDiffusionCE, 'string'));
+cw = str2double(get(handles.anisotropicDiffusionCW, 'string'));
 
 prcImg = sobelOperator(srcImg);
 axes(handles.processedImageAxes);
@@ -383,3 +406,493 @@ global prcImg;
 
 name = get(handles.processedImageName, 'string');
 saveImage(prcImg.full, name);
+
+
+
+function widthBox_Callback(hObject, eventdata, handles)
+% hObject    handle to widthBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of widthBox as text
+%        str2double(get(hObject,'String')) returns contents of widthBox as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function widthBox_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to widthBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function heightBox_Callback(hObject, eventdata, handles)
+% hObject    handle to heightBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of heightBox as text
+%        str2double(get(hObject,'String')) returns contents of heightBox as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function heightBox_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to heightBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function saltAndPepperNoiseP1_Callback(hObject, eventdata, handles)
+% hObject    handle to saltAndPepperNoiseP1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of saltAndPepperNoiseP1 as text
+%        str2double(get(hObject,'String')) returns contents of saltAndPepperNoiseP1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function saltAndPepperNoiseP1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to saltAndPepperNoiseP1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function saltAndPepperNoiseP2_Callback(hObject, eventdata, handles)
+% hObject    handle to saltAndPepperNoiseP2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of saltAndPepperNoiseP2 as text
+%        str2double(get(hObject,'String')) returns contents of saltAndPepperNoiseP2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function saltAndPepperNoiseP2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to saltAndPepperNoiseP2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function gaussianNoiseMu_Callback(hObject, eventdata, handles)
+% hObject    handle to gaussianNoiseMu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of gaussianNoiseMu as text
+%        str2double(get(hObject,'String')) returns contents of gaussianNoiseMu as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function gaussianNoiseMu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to gaussianNoiseMu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function gaussianNoiseSigma_Callback(hObject, eventdata, handles)
+% hObject    handle to gaussianNoiseSigma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of gaussianNoiseSigma as text
+%        str2double(get(hObject,'String')) returns contents of gaussianNoiseSigma as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function gaussianNoiseSigma_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to gaussianNoiseSigma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function rayleighNoisePsi_Callback(hObject, eventdata, handles)
+% hObject    handle to rayleighNoisePsi (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of rayleighNoisePsi as text
+%        str2double(get(hObject,'String')) returns contents of rayleighNoisePsi as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function rayleighNoisePsi_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to rayleighNoisePsi (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function exponentialNoiseLambda_Callback(hObject, eventdata, handles)
+% hObject    handle to exponentialNoiseLambda (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of exponentialNoiseLambda as text
+%        str2double(get(hObject,'String')) returns contents of exponentialNoiseLambda as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function exponentialNoiseLambda_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to exponentialNoiseLambda (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function medianFilterDim_Callback(hObject, eventdata, handles)
+% hObject    handle to medianFilterDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of medianFilterDim as text
+%        str2double(get(hObject,'String')) returns contents of medianFilterDim as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function medianFilterDim_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to medianFilterDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function lowPassFilterDim_Callback(hObject, eventdata, handles)
+% hObject    handle to lowPassFilterDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of lowPassFilterDim as text
+%        str2double(get(hObject,'String')) returns contents of lowPassFilterDim as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function lowPassFilterDim_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to lowPassFilterDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function highPassFilterDim_Callback(hObject, eventdata, handles)
+% hObject    handle to highPassFilterDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of highPassFilterDim as text
+%        str2double(get(hObject,'String')) returns contents of highPassFilterDim as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function highPassFilterDim_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to highPassFilterDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function isotropicDiffusionDim_Callback(hObject, eventdata, handles)
+% hObject    handle to isotropicDiffusionDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of isotropicDiffusionDim as text
+%        str2double(get(hObject,'String')) returns contents of isotropicDiffusionDim as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function isotropicDiffusionDim_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to isotropicDiffusionDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function isotropicDiffusionSigma_Callback(hObject, eventdata, handles)
+% hObject    handle to isotropicDiffusionSigma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of isotropicDiffusionSigma as text
+%        str2double(get(hObject,'String')) returns contents of isotropicDiffusionSigma as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function isotropicDiffusionSigma_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to isotropicDiffusionSigma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionCN_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCN (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionCN as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionCN as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionCN_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCN (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionCS_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCS (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionCS as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionCS as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionCS_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCS (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionDim_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionDim as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionDim as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionDim_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionDim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionSigma_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionSigma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionSigma as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionSigma as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionSigma_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionSigma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionCE_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCE (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionCE as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionCE as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionCE_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCE (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionCW_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCW (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionCW as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionCW as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionCW_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionCW (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton19.
+function pushbutton19_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+function edit33_Callback(hObject, eventdata, handles)
+% hObject    handle to edit33 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit33 as text
+%        str2double(get(hObject,'String')) returns contents of edit33 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit33_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit33 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit34_Callback(hObject, eventdata, handles)
+% hObject    handle to edit34 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit34 as text
+%        str2double(get(hObject,'String')) returns contents of edit34 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit34_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit34 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
