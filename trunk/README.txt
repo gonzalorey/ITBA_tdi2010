@@ -1,0 +1,4 @@
+Para correr la GUI, lo que se debe hacer es cargar estos directorios y todos sus subdirectorios en matlab (Seleccionando los directorios en la ventana de Current Folder, haciendo click con el boton derecho y Add To Path y luego -> Selected Folders And Subfolders).
+Una vez cargados todos los archivos (del TP1 y TP2), ecribir gui y se levantará la GUI que permita manejar todas las funciones del TP2.
+Aquí se pueden operar con imagenes del tipo RAW y jpg, png, tiff, etc. Cuando las imagenes estan en formato RAW, hay que incluir los parametros width y height para poder cargar la imagen.
+Una vez procesada una imagen, esta puede ser cargada como imagen de fuente (para luego volver a ser procesada) o guardada con un nombre de archivo deseado.
