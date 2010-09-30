@@ -349,17 +349,12 @@ set(handles.statusLabel, 'String', 'Processing...');
 
 dim = str2double(get(handles.isotropicDiffusionDim, 'string'));
 sigma = str2double(get(handles.anisotropicDiffusionSigma, 'string'));
-cn = str2double(get(handles.anisotropicDiffusionCN, 'string'));
-cs = str2double(get(handles.anisotropicDiffusionCS, 'string'));
-ce = str2double(get(handles.anisotropicDiffusionCE, 'string'));
-cw = str2double(get(handles.anisotropicDiffusionCW, 'string'));
 
-prcImg = anisotropicDiffusion(srcImg, sigma, dim, cn, cs, ce, cw);
+prcImg = anisotropicDiffusion(srcImg, sigma, dim);
 axes(handles.processedImageAxes);
 imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
-set(handles.processedImageName, 'String', 'anisotropic_diffusion.jpg');
 
 
 % --- Executes on button press in loadAsSourceImage.
