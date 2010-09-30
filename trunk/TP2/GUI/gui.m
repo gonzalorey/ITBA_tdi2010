@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 16-Sep-2010 16:11:15
+% Last Modified by GUIDE v2.5 30-Sep-2010 15:36:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -125,6 +125,8 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
+
 
 dim = str2double(get(handles.medianFilterDim, 'string'));
 
@@ -135,6 +137,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'median_filter.jpg');
+drawnow;
 
 
 % --- Executes on button press in lowpassfilter.
@@ -146,6 +149,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 dim = str2double(get(handles.lowPassFilterDim, 'string'));
 
@@ -156,6 +160,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'lowpass_filter.jpg');
+drawnow;
 
 
 % --- Executes on button press in highpassfilter.
@@ -167,6 +172,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 dim = str2double(get(handles.highPassFilterDim, 'string'));
 
@@ -177,6 +183,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'highpass_filter.jpg');
+drawnow;
 
 
 % --- Executes on button press in gaussianNoise.
@@ -188,6 +195,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 mu = str2double(get(handles.gaussianNoiseMu, 'string'));
 sigma = str2double(get(handles.gaussianNoiseSigma, 'string'));
@@ -198,6 +206,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'gaussian_noise.jpg');
+drawnow;
 
 
 % --- Executes on button press in rayleighNoise.
@@ -209,10 +218,9 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 psi = str2double(get(handles.rayleighNoisePsi, 'string'));
-
-set(handles.statusLabel, 'String', 'Processing...');
 
 prcImg = rayleighNoise(srcImg, psi);
 axes(handles.processedImageAxes);
@@ -220,6 +228,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'rayleigh_noise.jpg');
+drawnow;
 
 
 % --- Executes on button press in exponentialNoise.
@@ -231,6 +240,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 lambda = str2double(get(handles.exponentialNoiseLambda, 'string'));
 
@@ -240,6 +250,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'exponential_noise.jpg');
+drawnow;
 
 
 % --- Executes on button press in saltAndPepperNoise.
@@ -251,6 +262,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 p1 = str2double(get(handles.saltAndPepperNoiseP1, 'string'));
 p2 = str2double(get(handles.saltAndPepperNoiseP2, 'string'));
@@ -261,6 +273,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'saltandpepper_noise.jpg');
+drawnow;
 
 % --- Executes on button press in robertsOperator.
 function robertsOperator_Callback(hObject, eventdata, handles)
@@ -271,6 +284,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 prcImg = robertsOperator(srcImg);
 axes(handles.processedImageAxes);
@@ -278,6 +292,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'roberts_operator.jpg');
+drawnow;
 
 
 % --- Executes on button press in prewittOperator.
@@ -289,6 +304,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 prcImg = prewittOperator(srcImg);
 axes(handles.processedImageAxes);
@@ -296,6 +312,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'prewitt_operator.jpg');
+drawnow;
 
 
 % --- Executes on button press in sobelOperator.
@@ -307,6 +324,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 prcImg = sobelOperator(srcImg);
 axes(handles.processedImageAxes);
@@ -314,6 +332,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'sobel_operator.jpg');
+drawnow;
 
 
 % --- Executes on button press in isotropicDiffusion.
@@ -325,6 +344,7 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
 dim = str2double(get(handles.isotropicDiffusionDim, 'string'));
 sigma = str2double(get(handles.isotropicDiffusionSigma, 'string'));
@@ -335,6 +355,7 @@ imshow(prcImg.full);
 
 set(handles.statusLabel, 'String', 'Done!');
 set(handles.processedImageName, 'String', 'isotropic_diffusion.jpg');
+drawnow;
 
 
 % --- Executes on button press in anisotropicDiffusion.
@@ -346,15 +367,19 @@ global srcImg;
 global prcImg;
 
 set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
 
-dim = str2double(get(handles.isotropicDiffusionDim, 'string'));
+iterations = str2double(get(handles.anisotropicDiffusionIterations, 'string'));
 sigma = str2double(get(handles.anisotropicDiffusionSigma, 'string'));
+lambda = str2double(get(handles.anisotropicDiffusionLambda, 'string'));
 
-prcImg = anisotropicDiffusion(srcImg, sigma, dim);
+prcImg = anisotropicDiffusion2(srcImg, lambda, sigma, iterations);
 axes(handles.processedImageAxes);
-imshow(prcImg.full);
+imshow(prcImg.full,[]);
 
 set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', 'anisotropic_diffusion.jpg');
+drawnow;
 
 
 % --- Executes on button press in loadAsSourceImage.
@@ -749,18 +774,18 @@ end
 
 
 
-function anisotropicDiffusionDim_Callback(hObject, eventdata, handles)
-% hObject    handle to anisotropicDiffusionDim (see GCBO)
+function anisotropicDiffusionIterations_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionIterations (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of anisotropicDiffusionDim as text
-%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionDim as a double
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionIterations as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionIterations as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function anisotropicDiffusionDim_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to anisotropicDiffusionDim (see GCBO)
+function anisotropicDiffusionIterations_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionIterations (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -883,6 +908,29 @@ function edit34_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function edit34_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit34 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function anisotropicDiffusionLambda_Callback(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionLambda (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of anisotropicDiffusionLambda as text
+%        str2double(get(hObject,'String')) returns contents of anisotropicDiffusionLambda as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function anisotropicDiffusionLambda_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to anisotropicDiffusionLambda (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

@@ -81,3 +81,43 @@ function ret = anisotropicDiffusion(img, lambda, iterations)
     ret.full(:,:,3) = ret.B;
 	
 end
+
+function ret = applyAnisotropicMask(A, mask)
+	
+	% initialize the answer to improve performance
+    ret(size(A,1),size(A,2)) = 0;
+
+	% initialize the auxA matrix with the correction of the borders
+	auxA = ones(size(A,1) + size(mask,1) - 1, size(A,2) + size(mask,2) - 1) * 128;
+    fromX = 1 + (size(mask,1) - 1) / 2;
+    toX = 1 + (size(mask,1) - 1) / 2 + (size(A,1) - 1);
+    fromY = 1 + (size(mask,2) - 1) / 2;
+    toY = 1 + (size(mask,2) - 1) / 2 + (size(A,2) - 1);
+    
+	auxA(fromX : toX, fromY : toY) = A;
+
+	for i = fromX : toX
+		for j = fromY : toY
+			
+			% get the submatrix to apply the mask to 
+			subA = auxA(i - (size(mask,1) - 1) / 2:i + (size(mask,1) - 1) / 2,i - (size(mask,2) - 1) / 2:i + (size(mask,2) - 1) / 2);
+			
+			% north
+			subA(1,2) = subA(1,2) * (auxA(i-1,j) - auxA(i,j));
+			
+			% south
+			subA(3,2) = subA(3,2) * (auxA(i+1,j) - auxA(i,j));
+			
+			% west
+			subA(2,1) = subA(2,1) * (auxA(i,j-1) - auxA(i,j));
+			
+			% east
+			subA(2,3) = subA(2,3) * (auxA(i,j+1) - auxA(i,j));
+			
+			% total...
+			ret(i,j) = sum(sum(double(subA) .* mask));
+		end
+	end
+	
+	ret = uint8(ret);
+end
