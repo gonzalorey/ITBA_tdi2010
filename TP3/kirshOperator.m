@@ -27,7 +27,6 @@ function ret = kirshOperator(img)
 		ret.full(:,:,2) = ret.G;
 		ret.full(:,:,3) = ret.B;
 	else
-		ret = img;
 		ret.full = applyMask(ret.full, mask1);
 		ret.full = applyMask(ret.full, mask2);
 		ret.full = applyMask(ret.full, mask3);
