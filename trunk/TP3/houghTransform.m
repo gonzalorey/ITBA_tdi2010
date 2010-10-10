@@ -7,14 +7,18 @@ function ret = houghTransform(img, edge_detector, threshold, rho_discretization,
 	threshold_img = getThreshold(img, threshold);
 	
 	% discretize rho
-	D = max(size(img.full,1), size(img.full,2));
-	rho = [-sqrt(2)*D : 2*sqrt(2)*D/rho_discretization : sqrt(2)*D];
+%	D = max(size(img.full,1), size(img.full,2));
+%	rho = [-sqrt(2)*D : 2*sqrt(2)*D/rho_discretization : sqrt(2)*D];
 	
 	% discretize theta
-	theta = [-pi/2 : pi/theta_discretization : pi/2];
+%	theta = [-pi/2 : pi/theta_discretization : pi/2];
+	
+	% discretize theta and rho
+	D = max(size(img.full,1), size(img.full,2));
+	[rho, theta] = meshgrid([-sqrt(2)*D : 2*sqrt(2)*D/rho_discretization : sqrt(2)*D], [-pi/2:pi/theta_discretization:pi/2])
 	
 	% the accumulator
-	A = zeros(size(rho), size(theta));
+	A = zeros(size(rho,1), size(rho,2));
 	
 	% apply the linear function
 	for ri = 1 : size(rho)
@@ -39,6 +43,27 @@ function ret = houghTransform(img, edge_detector, threshold, rho_discretization,
 			end
 		end
 	end
+	
+	% apply the linear function
+	for x = 1 : size(img.full, 1)
+		for y = 1 : size(img.full, 2)				
+			
+			% if it's a white line
+			if(img.full(x,y) == 0)
+						
+				% apply the linear function
+				l = rho(ri) - x * cos(theta(ti)) - y * sin(theta(ti));
+						
+				% if it's smaller than epsilon
+				if(l < epsilon)
+						
+					% increment the accumulator
+					A(ri, ti) = A(ri, ti) + 1;
+				end
+			end
+		end
+	end
+				
 	
 	k = 0;
 	
