@@ -1,6 +1,6 @@
 function ret = houghTransform(img, edge_detector, threshold, rho_discretization, theta_discretization, epsilon, accumulator_threshold)
 	% save the original image
-	ret.orig = img.full;
+	ret.orig = img;
 	
 	% edge_detector function: usage => edge_detector(img)
 	edge_img = edge_detector(img);
@@ -34,10 +34,9 @@ function ret = houghTransform(img, edge_detector, threshold, rho_discretization,
 	% obtain the lines parameters
 	k = 0;
 	lines_params = [];
-	max_accum = max(max(A)) * accumulator_threshold;
 	for i = 1 : size(A, 1)
 		for j = 1 : size(A, 2)
-			if(A(i, j) > max_accum)
+			if(A(i, j) > accumulator_threshold)
 				k = k + 1;
 				lines_params(k, :) = [rho(i, j), theta(i, j)];
 			end
@@ -45,12 +44,12 @@ function ret = houghTransform(img, edge_detector, threshold, rho_discretization,
     end
 	
 	% create a matrix with the same dimentions as img and set the obtained lines
-	h = double(zeros(size(img.full,1), size(img.full,2)));
-	for x = 1 : size(h,1)
-		for y = 1 : size(h,2)
+	ret.hough = double(zeros(size(img.full,1), size(img.full,2)));
+	for x = 1 : size(ret.hough,1)
+		for y = 1 : size(ret.hough,2)
 			for i = 1 : size(lines_params,1)
 				if(abs(lines_params(i,1) - x * cos(lines_params(i,2)) - y * sin(lines_params(i,2))) < epsilon)
-					h(x,y) = 255;
+					ret.hough(x,y) = 255;
 				end
 			end
 		end
@@ -63,5 +62,5 @@ function ret = houghTransform(img, edge_detector, threshold, rho_discretization,
 	ret.theta = theta;
 	ret.accumulator = A;
 	ret.lines_params = lines_params;
-    ret.hough = h;
+	ret.lines = lines;
 end
