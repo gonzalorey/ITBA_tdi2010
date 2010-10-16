@@ -1,6 +1,6 @@
 function ret = houghTransform(img, edge_detector, threshold, rho_discretization, theta_discretization, epsilon, accumulator_threshold)
 	% save the original image
-	ret.orig = img.full;
+	ret.orig = img;
 	
 	% edge_detector function: usage => edge_detector(img)
 	edge_img = edge_detector(img);
