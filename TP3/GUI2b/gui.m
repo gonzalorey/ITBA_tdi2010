@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 18-Oct-2010 18:48:08
+% Last Modified by GUIDE v2.5 18-Oct-2010 19:17:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -98,6 +98,12 @@ pos = get(handles.threeOptionsPanel, 'Position');
 pos(1) = posX;
 pos(2) = posY;
 set(handles.threeOptionsPanel, 'Position', pos);
+
+% set the three options panel position
+pos = get(handles.sixOptionsPanel, 'Position');
+pos(1) = posX;
+pos(2) = posY;
+set(handles.sixOptionsPanel, 'Position', pos);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -996,6 +1002,7 @@ set(handles.zeroOptionsPanel, 'Visible', 'off');
 set(handles.oneOptionPanel, 'Visible', 'off');
 set(handles.twoOptionsPanel, 'Visible', 'off');
 set(handles.threeOptionsPanel, 'Visible', 'off');
+set(handles.sixOptionsPanel, 'Visible', 'off');
 
 switch get(handles.popUpMenu,'Value')   
     case 1 % Gaussian Noise             
@@ -1249,6 +1256,30 @@ switch get(handles.popUpMenu,'Value')
         
         % set the file name
         selectedFncName = 'log_filter.jpg';
+    
+    case 19 % Hough Transform
+        % set the panel visible
+        set(handles.sixOptionsPanel, 'Visible', 'on');
+        
+        % set the labels
+        set(handles.sixOptionsLabel2, 'String', 'Threshold:');
+        set(handles.sixOptionsLabel3, 'String', 'Rho/div:');
+        set(handles.sixOptionsLabel4, 'String', 'Theta/div:');
+        set(handles.sixOptionsLabel5, 'String', 'Epsilon:');
+        set(handles.sixOptionsLabel6, 'String', 'Pertentage:');
+        
+        % load the default value
+        set(handles.sixOptionsValue2, 'String', '128');
+        set(handles.sixOptionsValue3, 'String', '500');
+        set(handles.sixOptionsValue4, 'String', '200');
+        set(handles.sixOptionsValue5, 'String', '1');
+        set(handles.sixOptionsValue6, 'String', '0.5');
+        
+        % set the selected function
+        selectedFnc = @houghTransform;
+        
+        % set the file name
+        selectedFncName = 'hough_transform.jpg';
         
     otherwise
         % nothing...
@@ -1541,19 +1572,67 @@ set(handles.processedImageName, 'String', selectedFncName);
 drawnow;
 
 
+% --- Executes on button press in sixOptionsButton.
+function sixOptionsButton_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global srcImg;
+global prcImg;
+global selectedFnc;
+global selectedFncName;
 
-function edit49_Callback(hObject, eventdata, handles)
-% hObject    handle to edit49 (see GCBO)
+set(handles.statusLabel, 'String', 'Processing...');
+drawnow;
+
+% load the value from the popup menu
+switch get(handles.sixOptionsValue1,'Value')
+    case 1 % Border Detector A
+        val1 = @borderDetectorA;
+    case 2 % Kirsh Operator
+        val1 = @kirshOperator;
+    case 3 % Border Detector C
+        val1 = @borderDetectorC;
+    case 4 % Border Detector D
+        val1 = @borderDetectorD;
+    case 5 % Roberts Operator
+        val1 = @robertsOperator;
+    case 6 % Prewitt Operator
+        val1 = @prewittOperator;
+    case 7 % Sobel Operator    
+        val1 = @sobelOperator;
+    otherwise
+end
+
+% load the other values
+val2 = str2double(get(handles.sixOptionsValue2, 'string'));
+val3 = str2double(get(handles.sixOptionsValue3, 'string'));
+val4 = str2double(get(handles.sixOptionsValue4, 'string'));
+val5 = str2double(get(handles.sixOptionsValue5, 'string'));
+val6 = str2double(get(handles.sixOptionsValue6, 'string'));
+
+prcImg = selectedFnc(srcImg, val1, val2, val3, val4, val5, val6);
+axes(handles.processedImageAxes);
+imshow(prcImg.full);
+
+set(handles.statusLabel, 'String', 'Done!');
+set(handles.processedImageName, 'String', selectedFncName);
+drawnow;
+
+
+
+function sixOptionsValue4_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit49 as text
-%        str2double(get(hObject,'String')) returns contents of edit49 as a double
+% Hints: get(hObject,'String') returns contents of sixOptionsValue4 as text
+%        str2double(get(hObject,'String')) returns contents of sixOptionsValue4 as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit49_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit49 (see GCBO)
+function sixOptionsValue4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1565,18 +1644,18 @@ end
 
 
 
-function edit50_Callback(hObject, eventdata, handles)
-% hObject    handle to edit50 (see GCBO)
+function sixOptionsValue2_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit50 as text
-%        str2double(get(hObject,'String')) returns contents of edit50 as a double
+% Hints: get(hObject,'String') returns contents of sixOptionsValue2 as text
+%        str2double(get(hObject,'String')) returns contents of sixOptionsValue2 as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit50_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit50 (see GCBO)
+function sixOptionsValue2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1587,49 +1666,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton28.
-function pushbutton28_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton28 (see GCBO)
+function sixOptionsValue3_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-
-function edit51_Callback(hObject, eventdata, handles)
-% hObject    handle to edit51 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit51 as text
-%        str2double(get(hObject,'String')) returns contents of edit51 as a double
+% Hints: get(hObject,'String') returns contents of sixOptionsValue3 as text
+%        str2double(get(hObject,'String')) returns contents of sixOptionsValue3 as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit51_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit51 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit52_Callback(hObject, eventdata, handles)
-% hObject    handle to edit52 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit52 as text
-%        str2double(get(hObject,'String')) returns contents of edit52 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit52_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit52 (see GCBO)
+function sixOptionsValue3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1641,18 +1689,18 @@ end
 
 
 
-function edit53_Callback(hObject, eventdata, handles)
-% hObject    handle to edit53 (see GCBO)
+function sixOptionsValue5_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit53 as text
-%        str2double(get(hObject,'String')) returns contents of edit53 as a double
+% Hints: get(hObject,'String') returns contents of sixOptionsValue5 as text
+%        str2double(get(hObject,'String')) returns contents of sixOptionsValue5 as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit53_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit53 (see GCBO)
+function sixOptionsValue5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1663,19 +1711,32 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on selection change in popupmenu2.
-function popupmenu2_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu2 (see GCBO)
+
+function sixOptionsValue6_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu2 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu2
+% Hints: get(hObject,'String') returns contents of sixOptionsValue6 as text
+%        str2double(get(hObject,'String')) returns contents of sixOptionsValue6 as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu2 (see GCBO)
+function sixOptionsValue6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function sixOptionsValue1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1684,3 +1745,13 @@ function popupmenu2_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on selection change in sixOptionsValue1.
+function sixOptionsValue1_Callback(hObject, eventdata, handles)
+% hObject    handle to sixOptionsValue1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns sixOptionsValue1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from sixOptionsValue1
