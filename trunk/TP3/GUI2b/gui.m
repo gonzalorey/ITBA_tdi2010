@@ -993,12 +993,12 @@ switch get(handles.popUpMenu,'Value')
         set(handles.twoOptionsPanel, 'Visible', 'on');
         
         % set the labels
-        set(handles.twoOptionsLabel1, 'String', 'Mu');
-        set(handles.twoOptionsLabel2, 'String', 'Sigma');
+        set(handles.twoOptionsLabel1, 'String', 'Mu:');
+        set(handles.twoOptionsLabel2, 'String', 'Sigma:');
         
         % load the default values
-        set(handles.threeOptionsValue1, 'String', '0');
-        set(handles.threeOptionsValue2, 'String', '15');
+        set(handles.twoOptionsValue1, 'String', '0');
+        set(handles.twoOptionsValue2, 'String', '15');
         
         % set the selected function
         selectedFnc = @gaussianNoise;
@@ -1011,7 +1011,7 @@ switch get(handles.popUpMenu,'Value')
         set(handles.oneOptionPanel, 'Visible', 'on');
         
         % set the labels
-        set(handles.oneOptionLabel, 'String', 'Psi');
+        set(handles.oneOptionLabel, 'String', 'Psi:');
         
         % load the default value
         set(handles.oneOptionValue, 'String', '1');
@@ -1027,7 +1027,7 @@ switch get(handles.popUpMenu,'Value')
         set(handles.oneOptionPanel, 'Visible', 'on');
         
         % set the label
-        set(handles.oneOptionLabel, 'String', 'Lambda');
+        set(handles.oneOptionLabel, 'String', 'Lambda:');
         
         % load the default value
         set(handles.oneOptionValue, 'String', '10');
@@ -1043,12 +1043,12 @@ switch get(handles.popUpMenu,'Value')
         set(handles.twoOptionsPanel, 'Visible', 'on');
         
         % set the labels
-        set(handles.twoOptionsLabel1, 'String', 'p1');
-        set(handles.twoOptionsLabel2, 'String', 'p2');
+        set(handles.twoOptionsLabel1, 'String', 'p1:');
+        set(handles.twoOptionsLabel2, 'String', 'p2:');
         
         % load the default value
-        set(handles.threeOptionsValue1, 'String', '0.015');
-        set(handles.threeOptionsValue2, 'String', '0.995');
+        set(handles.twoOptionsValue1, 'String', '0.015');
+        set(handles.twoOptionsValue2, 'String', '0.995');
         
         % set the selected function
         selectedFnc = @saltAndPepperNoise;
@@ -1061,7 +1061,7 @@ switch get(handles.popUpMenu,'Value')
         set(handles.oneOptionPanel, 'Visible', 'on');
         
         % set the label
-        set(handles.oneOptionLabel, 'String', 'Dim');
+        set(handles.oneOptionLabel, 'String', 'Dim:');
         
         % load the default value
         set(handles.oneOptionValue, 'String', '3');
@@ -1077,7 +1077,7 @@ switch get(handles.popUpMenu,'Value')
         set(handles.oneOptionPanel, 'Visible', 'on');
         
         % set the label
-        set(handles.oneOptionLabel, 'String', 'Dim');
+        set(handles.oneOptionLabel, 'String', 'Dim:');
         
         % load the default value
         set(handles.oneOptionValue, 'String', '3');
@@ -1093,7 +1093,7 @@ switch get(handles.popUpMenu,'Value')
         set(handles.oneOptionPanel, 'Visible', 'on');
         
         % set the label
-        set(handles.oneOptionLabel, 'String', 'Dim');
+        set(handles.oneOptionLabel, 'String', 'Dim:');
         
         % load the default value
         set(handles.oneOptionValue, 'String', '3');
@@ -1139,12 +1139,12 @@ switch get(handles.popUpMenu,'Value')
         set(handles.twoOptionsPanel, 'Visible', 'on');
         
         % set the labels
-        set(handles.twoOptionsLabel1, 'String', 'Sigma');
-        set(handles.twoOptionsLabel2, 'String', 'Dim');
+        set(handles.twoOptionsLabel1, 'String', 'Sigma:');
+        set(handles.twoOptionsLabel2, 'String', 'Dim:');
         
         % load the default value
-        set(handles.threeOptionsValue1, 'String', '10');
-        set(handles.threeOptionsValue2, 'String', '10');
+        set(handles.twoOptionsValue1, 'String', '10');
+        set(handles.twoOptionsValue2, 'String', '10');
         
         % set the selected function
         selectedFnc = @isotropicDiffusion;
@@ -1157,20 +1157,88 @@ switch get(handles.popUpMenu,'Value')
         set(handles.threeOptionsPanel, 'Visible', 'on');
         
         % set the labels
-        set(handles.threeOptionsLabel1, 'String', 'Lambda');
-        set(handles.threeOptionsValue2, 'String', 'Sigma');
-        set(handles.threeOptionsLabel3, 'String', 'Iterations');
+        set(handles.threeOptionsLabel1, 'String', 'Lambda:');
+        set(handles.threeOptionsLabel2, 'String', 'Sigma:');
+        set(handles.threeOptionsLabel3, 'String', 'Iterations:');
         
         % load the default value
         set(handles.threeOptionsValue1, 'String', '0.25');
         set(handles.threeOptionsValue2, 'String', '10');
-        set(handles.threeOptionsLabel3, 'String', '20');
+        set(handles.threeOptionsValue3, 'String', '20');
         
         % set the selected function
         selectedFnc = @anisotropicDiffusion2;
         
         % set the file name
         selectedFncName = 'anisotropic_diffusion.jpg';
+        
+    case 13 % Border Detector A
+        % set the panel visible
+        set(handles.zeroOptionsPanel, 'Visible', 'on');
+        
+        % set the selected function
+        selectedFnc = @borderDetectorA;
+        
+        % set the file name
+        selectedFncName = 'border_detector_A.jpg';
+        
+    case 14 % Kirsh Operator
+        % set the panel visible
+        set(handles.zeroOptionsPanel, 'Visible', 'on');
+        
+        % set the selected function
+        selectedFnc = @kirshOperator;
+        
+        % set the file name
+        selectedFncName = 'kirsh_operator.jpg';
+    
+    case 15 % Border Detector C
+        % set the panel visible
+        set(handles.zeroOptionsPanel, 'Visible', 'on');
+        
+        % set the selected function
+        selectedFnc = @borderDetectorC;
+        
+        % set the file name
+        selectedFncName = 'border_detector_C.jpg';
+        
+    case 16 % Border Detector D
+        % set the panel visible
+        set(handles.zeroOptionsPanel, 'Visible', 'on');
+        
+        % set the selected function
+        selectedFnc = @borderDetectorD;
+        
+        % set the file name
+        selectedFncName = 'border_detector_D.jpg';
+        
+    case 17 % Laplacian Filter
+        % set the panel visible
+        set(handles.zeroOptionsPanel, 'Visible', 'on');
+        
+        % set the selected function
+        selectedFnc = @laplacianFilter;
+        
+        % set the file name
+        selectedFncName = 'laplacian_filter.jpg';
+        
+    case 18 % LoG Filter
+        % set the panel visible
+        set(handles.twoOptionsPanel, 'Visible', 'on');
+        
+        % set the labels
+        set(handles.twoOptionsLabel1, 'String', 'Sigma:');
+        set(handles.twoOptionsLabel2, 'String', 'Dim:');
+        
+        % load the default value
+        set(handles.twoOptionsValue1, 'String', '10');
+        set(handles.twoOptionsValue2, 'String', '10');
+        
+        % set the selected function
+        selectedFnc = @LOGFilter;
+        
+        % set the file name
+        selectedFncName = 'log_filter.jpg';
         
     otherwise
         % nothing...
@@ -1424,8 +1492,8 @@ set(handles.statusLabel, 'String', 'Processing...');
 drawnow;
 
 % load the value
-val1 = str2double(get(handles.threeOptionsValue1, 'string'));
-val2 = str2double(get(handles.threeOptionsValue2, 'string'));
+val1 = str2double(get(handles.twoOptionsValue1, 'string'));
+val2 = str2double(get(handles.twoOptionsValue2, 'string'));
 
 prcImg = selectedFnc(srcImg, val1, val2);
 axes(handles.processedImageAxes);
@@ -1452,7 +1520,7 @@ drawnow;
 % load the value
 val1 = str2double(get(handles.threeOptionsValue1, 'string'));
 val2 = str2double(get(handles.threeOptionsValue2, 'string'));
-val3 = str2double(get(handles.threeOptionsLabel3, 'string'));
+val3 = str2double(get(handles.threeOptionsValue3, 'string'));
 
 prcImg = selectedFnc(srcImg, val1, val2, val3);
 axes(handles.processedImageAxes);
