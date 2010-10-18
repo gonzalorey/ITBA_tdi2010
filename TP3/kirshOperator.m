@@ -14,22 +14,22 @@ function ret = kirshOperator(img)
 		ret.R = applyMask(img.R, mask1);
 		ret.G = applyMask(img.G, mask1);
 		ret.B = applyMask(img.B, mask1);
-		ret.R = applyMask(img.R, mask2);
-		ret.G = applyMask(img.G, mask2);
-		ret.B = applyMask(img.B, mask2);
-		ret.R = applyMask(img.R, mask3);
-		ret.G = applyMask(img.G, mask3);
-		ret.B = applyMask(img.B, mask3);
-		ret.R = applyMask(img.R, mask4);
-		ret.G = applyMask(img.G, mask4);
-		ret.B = applyMask(img.B, mask4);
+		%ret.R = applyMask(img.R, mask2);
+		%ret.G = applyMask(img.G, mask2);
+		%ret.B = applyMask(img.B, mask2);
+		%ret.R = applyMask(img.R, mask3);
+		%ret.G = applyMask(img.G, mask3);
+		%ret.B = applyMask(img.B, mask3);
+		%ret.R = applyMask(img.R, mask4);
+		%ret.G = applyMask(img.G, mask4);
+		%ret.B = applyMask(img.B, mask4);
 		ret.full = ret.R;
 		ret.full(:,:,2) = ret.G;
 		ret.full(:,:,3) = ret.B;
 	else
 		ret.full = applyMask(ret.full, mask1);
-		ret.full = applyMask(ret.full, mask2);
-		ret.full = applyMask(ret.full, mask3);
-		ret.full = applyMask(ret.full, mask4);
+		%ret.full = applyMask(ret.full, mask2);
+		%ret.full = applyMask(ret.full, mask3);
+		%ret.full = applyMask(ret.full, mask4);
 	end
 end
