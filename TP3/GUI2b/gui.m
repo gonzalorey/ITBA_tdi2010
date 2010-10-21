@@ -1289,6 +1289,22 @@ switch get(handles.popUpMenu,'Value')
         
         % set the file name
         selectedFncName = 'canny';
+    case 21 %susan
+         % set the panel visible
+        set(handles.oneOptionPanel, 'Visible', 'on');
+        
+        % set the label
+        set(handles.oneOptionLabel, 'String', 'Threshold:');
+        
+        % load the default value
+        set(handles.oneOptionValue, 'String', '10');
+        
+        % set the selected function
+        selectedFnc = @susan;
+        
+        % set the file name
+        selectedFncName = 'susan';
+        
     otherwise
         % nothing...
 end
