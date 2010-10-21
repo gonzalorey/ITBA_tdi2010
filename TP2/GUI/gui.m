@@ -378,7 +378,6 @@ axes(handles.processedImageAxes);
 imshow(prcImg.full,[]);
 
 set(handles.statusLabel, 'String', 'Done!');
-set(handles.processedImageName, 'String', 'anisotropic_diffusion.jpg');
 drawnow;
 
 
