@@ -1280,7 +1280,15 @@ switch get(handles.popUpMenu,'Value')
         
         % set the file name
         selectedFncName = 'hough_transform.jpg';
+    case 20 %canny
+    % set the panel visible
+        set(handles.zeroOptionsPanel, 'Visible', 'on');
         
+        % set the selected function
+        selectedFnc = @canny;
+        
+        % set the file name
+        selectedFncName = 'canny';
     otherwise
         % nothing...
 end

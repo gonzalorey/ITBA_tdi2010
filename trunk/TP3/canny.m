@@ -4,9 +4,9 @@ function ret = canny( w )
 %Example
 
 %A = imread('PLAQS1.TIF');
-%canny(a)
+%canny(A)
 
-
+img = imread('PLAQS1.TIF');
 %Parameters for the filters used for convolution
 Nx1=10;
 Sigmax1=1;
@@ -20,11 +20,7 @@ Sigmay2=1;
 Theta2=0;
 alfa=0.1;
 
-clf;
-
-w = ind2gray(w, gray(512));
-subplot(1,2,1);
-imshow(w);
+w = ind2gray(w.R, gray(512));
 
 w = double(w);
 %w = ind2gray(w, gray(512));
@@ -52,7 +48,6 @@ level=alfa*(I_max-I_min)+I_min;
 Ibw=max(NVI,level.*ones(size(NVI)));
 %imshow(Ibw);
 
-subplot(1,2,2);
 [n,m]=size(Ibw);
 for i=2:n-1,
 for j=2:m-1,
@@ -75,6 +70,12 @@ for j=2:m-1,
 	end
 end
 end
-imshow(I_temp);
+
+ret.R = I_temp;
+ret.G = I_temp;
+ret.B = I_temp;
+ret.full = ret.R;
+ret.full(:,:,2) = ret.G;
+ret.full(:,:,3) = ret.B;
 end
 
