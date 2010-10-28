@@ -1,4 +1,4 @@
-function img = susan(img1, umbral)
+function img = susan(img1, umbral, limit)
 	
 	if(length(size(img1.full)) == 3)
 		img1.full = img1.R;
@@ -29,7 +29,7 @@ function img = susan(img1, umbral)
 	     c = int32(c) + int32(abs(data(:,:,19)-data(:,:,i))<umbral);
 	end
 
-	c = c < 14;
+	c = c < limit;
 
 	c = c(floor(lado/2)+1:floor(lado/2)+1+size(img1.full,1)-1, floor(lado/2)+1:floor(lado/2)+1+size(img1.full,2)-1);
 	img.R=uint8(c*255);

@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 18-Oct-2010 19:17:48
+% Last Modified by GUIDE v2.5 28-Oct-2010 16:40:33
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1288,22 +1288,24 @@ switch get(handles.popUpMenu,'Value')
         selectedFnc = @canny;
         
         % set the file name
-        selectedFncName = 'canny';
+        selectedFncName = 'canny.jpg';
     case 21 %susan
          % set the panel visible
-        set(handles.oneOptionPanel, 'Visible', 'on');
+        set(handles.twoOptionsPanel, 'Visible', 'on');
         
-        % set the label
-        set(handles.oneOptionLabel, 'String', 'Threshold:');
+        % set the labels
+        set(handles.twoOptionsLabel1, 'String', 'Threshold:');
+        set(handles.twoOptionsLabel2, 'String', 'Limit:');
         
-        % load the default value
-        set(handles.oneOptionValue, 'String', '10');
+        % load the default values
+        set(handles.twoOptionsValue1, 'String', '10');
+        set(handles.twoOptionsValue2, 'String', '14');
         
         % set the selected function
         selectedFnc = @susan;
         
         % set the file name
-        selectedFncName = 'susan';
+        selectedFncName = 'susan.jpg';
         
     otherwise
         % nothing...
@@ -1779,3 +1781,23 @@ function sixOptionsValue1_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns sixOptionsValue1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from sixOptionsValue1
+
+
+
+function twoOptionsValue1_Callback(hObject, eventdata, handles)
+% hObject    handle to twoOptionsValue1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of twoOptionsValue1 as text
+%        str2double(get(hObject,'String')) returns contents of twoOptionsValue1 as a double
+
+
+
+function twoOptionsValue2_Callback(hObject, eventdata, handles)
+% hObject    handle to twoOptionsValue2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of twoOptionsValue2 as text
+%        str2double(get(hObject,'String')) returns contents of twoOptionsValue2 as a double
