@@ -1,4 +1,9 @@
 function img = susan(img1, umbral)
+	
+	if(length(size(img1.full)) == 3)
+		img1.full = img1.R;
+	end
+	
 	img=img1;
 	lado = 7;
 	pagina = 1;
@@ -11,7 +16,7 @@ function img = susan(img1, umbral)
 		
             if ( i - floor(lado/2) - 1 ) ^ 2 / floor(lado/2)^2+(j-floor(lado/2)-1)^2/floor(lado/2)^2 < 1.15
                 
-                data(i:i+size(img1.full,1)-1, j:j+size(img1.full,2)-1, pagina) = img1.R(:,:);
+                data(i:i+size(img1.full,1)-1, j:j+size(img1.full,2)-1, pagina) = img1.full(:,:);
                 pagina = pagina + 1;
 		
             end
@@ -24,7 +29,7 @@ function img = susan(img1, umbral)
 	     c = int32(c) + int32(abs(data(:,:,19)-data(:,:,i))<umbral);
 	end
 
-	c = c < 16;
+	c = c < 14;
 
 	c = c(floor(lado/2)+1:floor(lado/2)+1+size(img1.full,1)-1, floor(lado/2)+1:floor(lado/2)+1+size(img1.full,2)-1);
 	img.R=uint8(c*255);
