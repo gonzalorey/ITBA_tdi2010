@@ -20,7 +20,11 @@ Sigmay2=1;
 Theta2=0;
 alfa=0.1;
 
-w = ind2gray(w.R, gray(512));
+	if(length(size(w.full)) == 3)
+		w = ind2gray(w.R, gray(512));
+	else
+		w = w.full;
+	end
 
 w = double(w);
 %w = ind2gray(w, gray(512));
