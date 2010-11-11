@@ -6,5 +6,5 @@ function ret = applyFFT(img)
 	ret.real = real(ret.fft);
 	ret.imag = imag(ret.fft);
 	ret.module = sqrt(ret.real .^2 + ret.imag .^2);
-	ret.phase = atan(ret.imag ./ ret.real);
+	ret.phase = atan2(ret.imag, ret.real);
 end
